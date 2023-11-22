@@ -18,13 +18,16 @@
 char	*get_next_line(int fd)
 {
 	static t_node	*head;
-	static t_node	*cur_ptr;
+	static t_node	*tail;
 	t_node			*node;
-	
+	int				ret_read;
+
 	node = (t_node *)ft_calloc(1, sizeof(t_node));
 	if (!node)
 		return (node);
-	while(read(fd, node.buf, BUFFER_SIZE))
+	
+	ret_read = read(fd, node.buf, BUFFER_SIZE);
+	while(0 < ret_read)
 	{
 		if (ft_strchr((const char *)node.buf, '\n'))
 			read_a_line();
