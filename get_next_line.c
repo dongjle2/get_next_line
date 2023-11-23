@@ -25,17 +25,52 @@ char	*get_next_line(int fd)
 	node = (t_node *)ft_calloc(1, sizeof(t_node));
 	if (!node)
 		return (node);
-	
-	ret_read = read(fd, node.buf, BUFFER_SIZE);
-	while(0 < ret_read)
+	if (!head)
 	{
-		if (ft_strchr((const char *)node.buf, '\n'))
-			read_a_line();
-
-		cur_prt = &node;
+		head->next = node;
+		tail = &node;
 	}
-
+	while (True)
+	{
+		ret_read = read(fd, node.buf, BUFFER_SIZE);
+		if (0 < ret_read)
+		{
+			if (ft_strchr((const char *)node.buf, '\n'))
+				read_a_line();	//iterate the linked list and print until '\n'
+			tail->next = node;	
+			tail = node;
+		}
+		else if (!ret_read)
+			
+		else
+			free();
+			lstiteri();
+			return (0);
+	}
 }
+read_a_line()
+{
+	t_node	*cur;
+	size_t	i;
+
+	cur = head;
+	while (cur)
+	{
+		read_buffer();
+	}
+}
+
+read_buffer()
+{
+	size_t	i;
+
+	i = 0;
+	if (cur.buff[i] != '\n')
+		i++;
+	malloc(i + 1);
+	memmove;
+}
+
 #include <stdio.h>
 int	main(void)
 {
