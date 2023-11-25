@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbron      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 17:55:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2023/11/21 22:03:53 by dongjle2         ###   ########.fr       */
+/*   Updated: 2023/11/25 21:24:10 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,60 +17,35 @@
 
 char	*get_next_line(int fd)
 {
-	static t_node	*head;
-	static t_node	*tail;
-	t_node			*node;
-	int				ret_read;
+	char		buffer[BUFFER_SIZE];
+	char		*pstrjoin;
+	char		*cp_strjoin;
+	static char	*static_strjoin;
+	ssize_t		ret_read;
+	ssize_t		nl_idx;
 
-	node = (t_node *)ft_calloc(1, sizeof(t_node));
-	if (!node)
-		return (node);
-	if (!head)
+	ret_read = read(fd, buffer, BUFFER_SIZE);
+	
+	if (ret_read == BUFFER_SIZE)
 	{
-		head->next = node;
-		tail = &node;
-	}
-	while (True)
-	{
-		ret_read = read(fd, node.buf, BUFFER_SIZE);
-		if (0 < ret_read)
+
+		if (0 <= nl_idx(buffer))	//
 		{
-			if (ft_strchr((const char *)node.buf, '\n'))
-				read_a_line();	//iterate the linked list and print until '\n'
-			tail->next = node;	
-			tail = node;
-		}
-		else if (!ret_read)
 			
+		}
 		else
-			free();
-			lstiteri();
-			return (0);
+		{
+			pstrjoin = ft_strjoin(static_strjoin, buffer);
+			cp_strjoin = ft_strdup(pstrjoin);
+			static_strjoin = cp_strjoin;
+			free(pstrjoin);
+		}
 	}
+	else if (ret_read < BUFFER_SIZE)
+		return a line;
+	else
+		
 }
-read_a_line()
-{
-	t_node	*cur;
-	size_t	i;
-
-	cur = head;
-	while (cur)
-	{
-		read_buffer();
-	}
-}
-
-read_buffer()
-{
-	size_t	i;
-
-	i = 0;
-	if (cur.buff[i] != '\n')
-		i++;
-	malloc(i + 1);
-	memmove;
-}
-
 #include <stdio.h>
 int	main(void)
 {
