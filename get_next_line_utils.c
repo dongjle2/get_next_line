@@ -13,6 +13,13 @@
 #include "get_next_line.h"
 #include <stdlib.h>
 
+typedef struct s_local_char_ptrs
+{
+	char	buffer[BUFFER_SIZE];
+	char	*pstrjoin;
+	char	*cp_strjoin;
+}t_local_ptrs;
+
 size_t	ft_strlen(const char *s)
 {
 	size_t	l;
@@ -59,7 +66,7 @@ char	*ft_strdup(const char *s1)
 	return (ft_memmove(mem, s1, len_s1));
 }
 
-ssize_t	nl_idx(char *str)
+ssize_t	find_nl_idx(char *str)
 {
 	size_t	idx;
 

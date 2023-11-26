@@ -15,6 +15,7 @@
 #include "get_next_line.h"
 #include "get_next_line_utils.c"
 
+update_static_strjoin(char buffer[BUFFER_SIZE], char *pstrjoin, char *)
 char	*get_next_line(int fd)
 {
 	char		buffer[BUFFER_SIZE];
@@ -25,10 +26,13 @@ char	*get_next_line(int fd)
 	ssize_t		nl_idx;
 
 	ret_read = read(fd, buffer, BUFFER_SIZE);
-	
-	if (ret_read == BUFFER_SIZE)
+	nl_idx = find_nl_idx(buffer);	
+	if (0 <= nl_idx)
 	{
-
+		if (nl_idx != BUFFER_SIZE - 1)
+			buffer[nl_idx] + 1] = 0;
+		pstrjoin = ft_strjoin(static_strjoin, buffer);
+		
 		if (0 <= nl_idx(buffer))	//
 		{
 			
