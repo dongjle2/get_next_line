@@ -6,19 +6,12 @@
 /*   By: dongjle2 <dongjle2@student.42heilbron      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 20:07:11 by dongjle2          #+#    #+#             */
-/*   Updated: 2023/11/25 21:14:24 by dongjle2         ###   ########.fr       */
+/*   Updated: 2023/11/26 21:47:17 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdlib.h>
-
-typedef struct s_local_char_ptrs
-{
-	char	buffer[BUFFER_SIZE];
-	char	*pstrjoin;
-	char	*cp_strjoin;
-}t_local_ptrs;
 
 size_t	ft_strlen(const char *s)
 {
@@ -51,6 +44,22 @@ char	*ft_memmove(void *dst, const void *src, size_t len)
 			pdst[len] = psrc[len];
 	}
 	return (dst);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	size_t	len_s1;
+	size_t	len_s2;
+	char	*mem;
+
+	len_s1 = ft_strlen(s1);
+	len_s2 = ft_strlen(s2);
+	mem = malloc(len_s1 + len_s2 + 1);
+	if (!mem)
+		return (mem);
+	ft_memmove(mem, s1, len_s1);
+	ft_memmove(mem + s1, s2, len_s2);
+	return (mem);
 }
 
 char	*ft_strdup(const char *s1)
