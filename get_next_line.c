@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbron      +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 17:55:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2023/11/26 22:36:15 by dongjle2         ###   ########.fr       */
+/*   Updated: 2023/11/27 23:14:29 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,79 +15,76 @@
 #include "get_next_line.h"
 #include "get_next_line_utils.c"
 
-update_static_strjoin(t_local_ptrs *pptrs)
+char	*malloc_a_line(t_local_ptrs *ptrs, char *static_strjoin, ssize_t nl_idx)
 {
-	
-}
-
-char	*alloc_a_line(t_local_ptrs ptrs, ssize_t nl_idx)
-{
-	
-}
-
-char	*gnl_bufffer_join(t_local_ptrs ptrs, ssize_t nl_idx)
-{
-	char	*pbuffer;
-	char	*mem;
-	size_t	len_static;
+	unsigned char	tmp;
+	char			*pbuffer;
+	char			*mem;
+	size_t			len_static;
 
 	len_static = ft_strlen(static_strjoin);
-	pbuffer = ptrs.buf;
-	pbuffer[nl_idx + 1] = 0;
-	mem = malloc(len_static + nl_idx + 1);
-	if (!mem)
-		return (mem);
-	ft_memmove(mem, static_strjoin, len_static);
-	ft_memmove(mem + len_static, pbuffer, nl_idx + 1);
-//	static_strjoin = 
-	return (mem);
+	pbuffer = ptrs->buffer;
+	tmp = ptrs->buffer[nl_idx + 1];
+	ptrs->buffer[nl_idx + 1] = 0;
+	ptrs->tmp = ft_strjoin(static_strjoin, ptrs->buffer);
+	free(static_strjoin);
+	ptrs->buffer[nl_idx + 1] = tmp;
+	pbuffer += (nl_idx + 1);
+	static_strjoin = ft_strdup(pbuffer);
+	return (ptrs->tmp);
+}
+
+void	init_ptrs(t_local_ptrs *ptrs)
+{
+	size_t	i;
+
+	i = BUFFER_SIZE;
+	while (i--)
+		ptrs->buffer[i] = 0;
+	ptrs->tmp = NULL;
 }
 
 char	*get_next_line(int fd)
 {
 	t_local_ptrs	ptrs;
 	static char		*static_strjoin;
-	char			dup_buffer[BUFFER_SIZE + 1];
 	ssize_t			ret_read;
 	ssize_t			nl_idx;
 
-	ret_read = read(fd, buffer, BUFFER_SIZE);
-	nl_idx = find_nl_idx(buffer);	
-	if (0 <= nl_idx)
+	while (1)
 	{
-		strlcpy(dup_buffer, t_ptrs.buf);
-		dup_buffer[nl_idx + 1] = 0;
-		t_ptrs.pstrjoin = ft_strjoin(static_strjoin, dup_buffer);
-		static_strjoin = t_ptrs.buf + BUFFER_SIZE + 1;
-		return (t_ptrs.pstrjoin);
+		init_ptrs(&ptrs);
+		ret_read = read(fd, ptrs.buffer, BUFFER_SIZE);
+		if (fd == -1 || ret_read <= 0)
+			return (NULL);
+		nl_idx = find_nl_idx(ptrs.buffer);
+		if (nl_idx <= 0)							//nl not found, concat
+		{
+			ptrs.tmp = ft_strjoin(static_strjoin, ptrs.buffer);
+			free(static_strjoin);
+			static_strjoin = ptrs.tmp;
+			if (ret_read != BUFFER_SIZE)			//end of file
+				return (static_strjoin);
+		}
+		else										//nl_found
+			return (malloc_a_line(&ptrs, static_strjoin, nl_idx));
 	}
-	else if (ret_read == BUFFER_SIZE)
-	{
-		concat_buffer(&ptrs, )
-		pstrjoin = ft_strjoin(static_strjoin, ptrs.buffer);
-		cp_strjoin = ft_strdup(pstrjoin);
-		static_strjoin = cp_strjoin;
-		free(pstrjoin);
-	}
-	else		//end of the file
-		
 }
 #include <stdio.h>
 int	main(void)
 {
 	int fd = open("./a.txt", O_RDONLY);
 	int	ret;
-	int	i = 0;
+	int	i;
+
+	i = 0;
 	if (fd == -1)
-	{
 		return (-1);	
-	}
 	char	buf[BUFFER_SIZE];
-	while (i++ < 10)
+	while (i < 15)
 	{
-		ret = read(fd, buf, BUFFER_SIZE);
-		printf("%d\n", ret);
-		printf("%s\n", buf);
+		printf("%s\n", get_next_line(fd));
+		i++;
 	}
 	return (0);
 }

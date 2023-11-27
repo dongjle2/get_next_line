@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbron      +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 20:07:11 by dongjle2          #+#    #+#             */
-/*   Updated: 2023/11/26 21:47:17 by dongjle2         ###   ########.fr       */
+/*   Updated: 2023/11/27 22:25:40 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!mem)
 		return (mem);
 	ft_memmove(mem, s1, len_s1);
-	ft_memmove(mem + s1, s2, len_s2);
+	ft_memmove(mem + len_s1, s2, len_s2);
 	return (mem);
 }
 
 char	*ft_strdup(const char *s1)
 {
 	size_t	len_s1;
-	void	*mem;
+	char	*mem;
 
 	len_s1 = ft_strlen(s1);
 	mem = malloc(len_s1 + 1);
@@ -86,6 +86,7 @@ ssize_t	find_nl_idx(char *str)
 	{
 		if (str[idx] == '\n')
 			return (idx);
+		idx++;
 	}
 	return (-1);
 }
