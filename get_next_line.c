@@ -19,10 +19,7 @@ char	*malloc_a_line(t_local_ptrs *ptrs, char *static_strjoin, ssize_t nl_idx)
 {
 	unsigned char	tmp;
 	char			*pbuffer;
-	char			*mem;
-	size_t			len_static;
 
-	len_static = ft_strlen(static_strjoin);
 	pbuffer = ptrs->buffer;
 	tmp = ptrs->buffer[nl_idx + 1];
 	ptrs->buffer[nl_idx + 1] = 0;
@@ -74,13 +71,9 @@ char	*get_next_line(int fd)
 int	main(void)
 {
 	int fd = open("./a.txt", O_RDONLY);
-	int	ret;
 	int	i;
 
 	i = 0;
-	if (fd == -1)
-		return (-1);	
-	char	buf[BUFFER_SIZE];
 	while (i < 15)
 	{
 		printf("%s\n", get_next_line(fd));
