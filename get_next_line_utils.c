@@ -6,20 +6,19 @@
 /*   By: dongjle2 <dongjle2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 20:07:11 by dongjle2          #+#    #+#             */
-/*   Updated: 2023/11/27 22:25:40 by dongjle2         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:27:37 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
 
 size_t	ft_strlen(const char *s)
 {
 	size_t	l;
 
-	if (!s)
-		return (0);
 	l = 0;
+	if (!s)
+		return (l);
 	while (*s++)
 		l++;
 	return (l);
@@ -77,16 +76,16 @@ char	*ft_strdup(const char *s1)
 
 ssize_t	find_nl_idx(char *str)
 {
-	size_t	idx;
+	size_t	l;
 
-	if (!str)
+	if (str == NULL)
 		return (-1);
-	idx = 0;
-	while (str[idx])
+	l = ft_strlen(str) - 1;
+	while (str[l])
 	{
-		if (str[idx] == '\n')
-			return (idx);
-		idx++;
+		if (str[l] == '\n')
+			return (l);
+		l++;
 	}
 	return (-1);
 }
