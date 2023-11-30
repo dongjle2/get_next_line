@@ -6,11 +6,12 @@
 /*   By: dongjle2 <dongjle2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 20:07:11 by dongjle2          #+#    #+#             */
-/*   Updated: 2023/11/28 22:27:37 by dongjle2         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:26:06 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
 
 size_t	ft_strlen(const char *s)
 {
@@ -76,16 +77,16 @@ char	*ft_strdup(const char *s1)
 
 ssize_t	find_nl_idx(char *str)
 {
-	size_t	l;
+	size_t	idx;
 
+	idx = 0;
 	if (str == NULL)
 		return (-1);
-	l = ft_strlen(str) - 1;
-	while (str[l])
+	while (str[idx])
 	{
-		if (str[l] == '\n')
-			return (l);
-		l++;
+		if (str[idx] == '\n')
+			return (idx);
+		idx++;
 	}
 	return (-1);
 }
