@@ -6,26 +6,31 @@
 /*   By: dongjle2 <dongjle2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 17:55:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2023/11/30 23:39:47 by dongjle2         ###   ########.fr       */
+/*   Updated: 2023/12/02 01:53:29 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "get_next_line.h"
 
-char	*ret_from_stored_string(char **stored_str, ssize_t nl_idx)
+char	*ret_from_stored_string(char **stored_str, size_t nl_idx)
 {
 	char	*tmp_str;
 	char	*ret_str;
 	char	*tmp_stored_str;
 	char	tmp_char;
 
-	tmp_char = (*stored_str)[nl_idx + 1];
-	stored_str[nl_idx + 1] = 0;
+	if (nl_idx == ft_strlen(*stored_str) - 1)
+		tmp_char = 0;
+	else
+	{
+		tmp_char = (*stored_str)[nl_idx + 1];
+		(*stored_str)[nl_idx + 1] = 0;
+	}
 	ret_str = ft_strdup(*stored_str);
 	// if (ret_str == NULL)
 	// 	return (NULL);
-	*stored_str[nl_idx + 1] = tmp_char;
+	*(*stored_str + nl_idx + 1) = tmp_char;
 	tmp_str = *stored_str + nl_idx + 1;
 	if (!tmp_str)
 	{
@@ -46,19 +51,20 @@ char	*ret_concat(char **stored_str, char buffer[BUFFER_SIZE + 1], ssize_t nl_idx
 {
 	unsigned char	tmp_char;
 	char			*ret_str;
-	char			*pbuffer;
+	// char			*pbuffer;
 
 	tmp_char = buffer[nl_idx + 1];
 	buffer[nl_idx + 1] = 0;
-	pbuffer = buffer;
-	ret_str = ft_strjoin(*stored_str, pbuffer);
+	// pbuffer = buffer;
+	ret_str = ft_strjoin(*stored_str, buffer);
 	// if (ret_str == NULL)
 	// 	return (NULL);
-	free(*stored_str);
+	if (*stored_str)
+		free(*stored_str);
 	*stored_str = NULL;
 	buffer[nl_idx + 1] = tmp_char;
-	pbuffer = buffer + nl_idx + 1;
-	*stored_str = ft_strdup(pbuffer);
+	buffer += nl_idx + 1;
+	*stored_str = ft_strdup(buffer);
 	// if (*stored_str == NULL)
 	// 	return (NULL);
 	return (ret_str);
@@ -97,7 +103,6 @@ char	*start_read(char **stored_str, int fd)
 	buffer[BUFFER_SIZE] = 0;
 	while (nl_idx < 0)
 	{
-		//init_buffer
 		ret_read = read(fd, buffer, BUFFER_SIZE);
 		if (ret_read <= 0)
 			return (NULL);
@@ -129,7 +134,10 @@ char	*get_next_line(int fd)
 	{
 		nl_idx = find_nl_idx(stored_str);
 		if (0 <= nl_idx)
-			return (ret_from_stored_string(&stored_str, nl_idx));
+
+			// if (*stored_str == NULL);
+				// read
+			return (ret_from_stored_string(&stored_str, (size_t)nl_idx));
 		single_line = start_read(&stored_str, fd);
 		return (single_line);
 
@@ -144,10 +152,10 @@ int	main(void)
 	int	i;
 	char	*gnl;
 	i = 0;
-	while (i < 17)
+	while (i < 4)
 	{
 		gnl = get_next_line(fd);
-		write(1, gnl, ft_strlen(gnl));
+		printf("%s\n", gnl);
 		i++;
 	}
 	return (0);
