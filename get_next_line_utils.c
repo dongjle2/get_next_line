@@ -6,19 +6,18 @@
 /*   By: dongjle2 <dongjle2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 20:07:11 by dongjle2          #+#    #+#             */
-/*   Updated: 2023/12/01 14:19:31 by dongjle2         ###   ########.fr       */
+/*   Updated: 2023/12/04 23:32:33 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 size_t	ft_strlen(const char *s)
 {
 	size_t	l;
 
 	l = 0;
-	if (!s)
+	if (s == NULL)
 		return (l);
 	while (*s++)
 		l++;
@@ -32,7 +31,6 @@ char	*ft_memmove(void *dst, const void *src, size_t len)
 
 	pdst = (unsigned char *)dst;
 	psrc = (const unsigned char *)src;
-
 	if (pdst < psrc)
 	{
 		while (len--)
@@ -46,22 +44,6 @@ char	*ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	len_s1;
-	size_t	len_s2;
-	char	*mem;
-
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	mem = malloc(len_s1 + len_s2 + 1);
-	if (!mem)
-		return (mem);
-	ft_memmove(mem, s1, len_s1);
-	ft_memmove(mem + len_s1, s2, len_s2 + 1);
-	return (mem);
-}
-
 char	*ft_strdup(const char *s1)
 {
 	size_t	len_s1;
@@ -70,7 +52,7 @@ char	*ft_strdup(const char *s1)
 	len_s1 = ft_strlen(s1);
 	mem = malloc(len_s1 + 1);
 	if (!mem)
-		return (mem);
+		return (NULL);
 	mem[len_s1] = 0;
 	return (ft_memmove(mem, s1, len_s1));
 }
@@ -89,4 +71,19 @@ ssize_t	find_nl_idx(char *str)
 		idx++;
 	}
 	return (-1);
+}
+
+int	init_static(t_stored_str *i)
+{
+	size_t	idx;
+
+	idx = 0;
+	i->stored_str = (char *)malloc(128);
+	if (i->stored_str == NULL)
+		return (0);
+	i->size = 128;
+	while (idx < i->size)
+		i->stored_str[idx++] = 0;
+	i->rd_flag = 1;
+	return (1);
 }
